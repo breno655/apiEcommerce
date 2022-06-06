@@ -3,9 +3,6 @@ package com.edu.unifacisa.ecommerce.controller;
 import com.edu.unifacisa.ecommerce.model.User;
 import com.edu.unifacisa.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,23 +13,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-//    @RequestMapping(value="/user", method = RequestMethod.GET)
-//    public ResponseEntity< List<User> > listarTodosUsuarios(@RequestHeader HttpHeaders headers) {
-//        List<User> users = null;
-//        try {
-//            String sessionToken = headers.get("sessionToken").get(0);
-//            users = userService.getAllUsers(sessionToken);
-//            if (users != null) {
-//                return new ResponseEntity<List<User>>(users, HttpStatus.OK);
-//            } else {
-//                return new ResponseEntity<List<User>>(users, HttpStatus.UNAUTHORIZED);
-//            }
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//            return new ResponseEntity<List<User>>(users, HttpStatus.BAD_REQUEST);
-//        }
-//    }
 
     @GetMapping()
     public List<User> getUsers () {
@@ -54,9 +34,18 @@ public class UserController {
         return userService.findById(id);
     }
 
-    @PutMapping("atualiza={id}")
+    @PutMapping("update={id}")
     public void atualizaUser (@PathVariable long id, @RequestBody User user) {
         userService.atualizaUser(id, user);
+    }
+
+    @PostMapping("/login")
+    public String login (@RequestBody User user) {
+        String login = user.getLogin();
+        String password = user.getPassword();
+        String logado = userService.login(login, password);
+        System.out.println(logado);
+        return logado;
     }
 
 }

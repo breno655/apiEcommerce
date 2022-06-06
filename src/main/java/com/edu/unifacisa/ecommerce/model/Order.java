@@ -1,7 +1,8 @@
 package com.edu.unifacisa.ecommerce.model;
 
 import javax.persistence.*;
-import java.time.Instant;
+import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_order")
@@ -12,11 +13,14 @@ public class Order {
     private long id;
     @ManyToOne
     private User client;
-    private Instant moment;
+    @OneToMany(mappedBy = "order")
+    private List<ProductOrder> productOrders;
+    private LocalDate moment;
+    private double amount;
 
-    public Order(User client, Instant moment) {
+    public Order(User client) {
         this.client = client;
-        this.moment = moment;
+        this.moment = LocalDate.now();
     }
 
     public Order() {
@@ -39,11 +43,19 @@ public class Order {
         this.client = client;
     }
 
-    public Instant getMoment() {
+    public LocalDate getMoment() {
         return moment;
     }
 
-    public void setMoment(Instant moment) {
+    public void setMoment(LocalDate moment) {
         this.moment = moment;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 }

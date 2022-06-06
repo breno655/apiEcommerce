@@ -1,12 +1,14 @@
 package com.edu.unifacisa.ecommerce.model;
 
+import com.edu.unifacisa.ecommerce.enums.TypeOfUser;
+
 import javax.persistence.*;
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_user")
-public class User implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -14,26 +16,31 @@ public class User implements Serializable {
     private String name;
     private String login;
     private String password;
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String sessionToken;
-    private String typeOfUser;
-    //private ShoppingCart shoppngCart
+    @Enumerated(EnumType.STRING)
+    private TypeOfUser typeOfUser;
+
+    @OneToMany(mappedBy = "client", targetEntity = Product.class, cascade = CascadeType.ALL)
+    private List<Cart> carts;
 
     public User() {
 
     }
 
-    public User(String name, String login, String password, String typeOfUser) {
+    public User(String name, String login, String password, TypeOfUser typeOfUser) {
         this.name = name;
         this.login = login;
         this.password = password;
         this.typeOfUser = typeOfUser;
+        this.carts = new ArrayList<>();
     }
 
-    public String getTypeOfUser() {
+    public TypeOfUser getTypeOfUser() {
         return typeOfUser;
     }
 
-    public void setTypeOfUser(String typeOfUser) {
+    public void setTypeOfUser(TypeOfUser typeOfUser) {
         this.typeOfUser = typeOfUser;
     }
 
@@ -74,5 +81,13 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Cart> getCarts() {
+        return carts;
+    }
+
+    public void setCarts(List<Cart> carts) {
+        this.carts = carts;
     }
 }

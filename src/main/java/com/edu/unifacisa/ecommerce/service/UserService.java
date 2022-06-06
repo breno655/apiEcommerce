@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -15,6 +16,16 @@ public class UserService {
 
     public void insertUser (User user) {
         userRepository.save(user);
+    }
+
+    public String login (String login, String senha) {
+        List<User> listUsers = userRepository.findAll();
+        String logado = "false";
+        for (User user : listUsers){
+            if (user.getLogin().equals(login) && user.getPassword().equals(senha)) {
+                return "true";
+            }
+        } return logado;
     }
 
     public List<User> findAll () {
